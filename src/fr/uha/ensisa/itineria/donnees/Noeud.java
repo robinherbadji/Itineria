@@ -47,6 +47,7 @@ public class Noeud {
 		this.cout=cout;
 		this.profondeur=profondeur;
 	}
+	
 	/**
 	 * Renvoie la liste des routes entre le noeud et la racine
 	 * @return
@@ -63,15 +64,13 @@ public class Noeud {
 	 */
 	public ArrayList<Ville> getVillesFromRacine()
 	{		
-		//À compléter
+		//À compl�ter
 		return null;
 	}
-
+	
 	public void setCout(double cout) {
 		this.cout=cout;
 		
 	}
 	
-	
-
 }

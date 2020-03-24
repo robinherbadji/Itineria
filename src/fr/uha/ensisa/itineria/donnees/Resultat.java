@@ -6,6 +6,7 @@ import java.util.ArrayList;
  * @author weber
  *
  */
+
 public class Resultat {
 	Parametres parametres;
 	ArrayList<Route> trajet;
@@ -27,8 +28,12 @@ public class Resultat {
 	 */
 	public int getDistance()
 	{
-		//À compléter
-		return 0;
+		int dist = 0;
+		for (Route r : trajet)
+		{
+			dist += r.getDistance();
+		}
+		return dist;
 	}
 	
 	/**
@@ -39,9 +44,14 @@ public class Resultat {
 	 */
 	public int getDuree()
 	{
-		//À compléter
-		return 0;
+		int duree = 0;
+		for (Route r : trajet)
+		{
+			duree += r.getDuree();
+		}
+		return duree;
 	}
+	
 	
 	/**
 	 * @author Robin
@@ -51,8 +61,11 @@ public class Resultat {
 	 */
 	public int getProfondeur()
 	{
-		//À compléter
-		return 0;
+		// TODO
+		// QU'EST CE QUE LA PROFONDEUR ???
+		//int profondeur = trajet.get(trajet.size()-1).getV2();
+		int profondeur = 0;
+		return profondeur;
 	}
 	
 	/**
@@ -62,7 +75,18 @@ public class Resultat {
 	 */
 	public String toString()
 	{
-		return "";
+		StringBuilder str = new StringBuilder();
+		str.append("Trajet entre "+parametres.getDepart()+" et "+parametres.getArrivee()+"\n");
+		for (Route r : trajet)
+		{
+			str.append(r.getV1()+" --> "+r.getV2());
+		}
+		str.append("\nDistance : "+getDistance()+"km");
+		str.append("\nDuree : "+getDuree()+" minutes");
+		str.append("\nProfondeur de la solution : "+getProfondeur());
+		str.append("\nTemps de calcul : "+tempsDeCalcul+"ms");
+		str.append("\n# noeuds explores : "+nbNoeudsExplores);
+		return str.toString();
 	}
 	
 }
