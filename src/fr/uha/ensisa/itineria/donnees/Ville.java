@@ -54,13 +54,19 @@ public class Ville {
 	}
 	
 	/**
+	 * @author Robin
+	 * 
 	 * Renvoie la route reliant la ville voisine donn�e en argument
 	 * @param v
 	 * @return
 	 */
 	public Route getRouteTo(Ville v)
 	{
-		//À compléter
+		for (Route route : routesVersVoisins) {
+			if (route.getAutreVille(v).equals(this)) {
+				return route;
+			}
+		}
 		return null;
 	}
 	
