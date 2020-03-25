@@ -76,10 +76,10 @@ public class Resultat {
 	public String toString()
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("Trajet entre "+parametres.getDepart()+" et "+parametres.getArrivee()+"\n");
+		str.append("Trajet entre "+parametres.getDepart().getNom()+" et "+parametres.getArrivee().getNom()+":x\n");
 		for (Route r : trajet)
 		{
-			str.append(r.getV1()+" --> "+r.getV2());
+			str.append(r.getV1().getNom()+" --> "+r.getV2().getNom()+"\n");
 		}
 		str.append("\nDistance : "+getDistance()+"km");
 		str.append("\nDuree : "+getDuree()+" minutes");
