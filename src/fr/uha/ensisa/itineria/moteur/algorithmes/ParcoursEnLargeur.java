@@ -43,34 +43,44 @@ public class ParcoursEnLargeur extends Algorithme {
 		LinkedList<Noeud> fileAttente = new LinkedList<Noeud>();
 		
 		Noeud racine = new Noeud(parametres.getDepart());
-		fileAttente.add(racine);
-		
-		
+		fileAttente.add(racine);		
 		Noeud noeudCourant = racine;
 		Ville villeCourante = noeudCourant.getVille();
-		//int i = 0;
 		do {
 			noeudCourant = fileAttente.pollFirst();
-			noeuds.add(noeudCourant);
-			
-			
-			
-			villeCourante = noeudCourant.getVille();
-			
-			int i = 0;
-			for (Route route : villeCourante.getRoutesVersVoisins()) {
-				i += 1;
-				System.out.println(i);
-				//Ville villeVoisine = route.getAutreVille(villeCourante);
-				//Noeud noeud = new Noeud(villeVoisine, noeudCourant, route.getDistance(), noeudCourant.getProfondeur()+1);
-				Noeud noeudVoisin = new Noeud(route.getAutreVille(villeCourante), noeudCourant, route.getDistance(), noeudCourant.getProfondeur()+1);
-				fileAttente.add(noeudVoisin);				
+			if (!noeuds.contains(noeudCourant)) {
+				noeuds.add(noeudCourant);
+				
+				villeCourante = noeudCourant.getVille();				
+				for (Route route : villeCourante.getRoutesVersVoisins()) {
+					Ville villeVoisine = route.getAutreVille(villeCourante);
+					System.out.println(noeudCourant.getProfondeur());
+					
+					Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant, route.getDistance(), noeudCourant.getProfondeur()+1);
+					fileAttente.add(noeudVoisin);
+					
+					
+					/*
+					if (villeVoisine != noeudCourant.getParent().getVille()) {
+						Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant, route.getDistance(), noeudCourant.getProfondeur()+1);
+						fileAttente.add(noeudVoisin);
+					}
+					*/
+					
+				}
 			}			
+			
+			
+			/*
+			System.out.println(villeCourante.getNom());
+			if (villeCourante == parametres.getArrivee()) {
+				break;
+			}
+			*/
 		}
 		while (!verifierObjectif(villeCourante));
 		tempsDeCalcul = System.currentTimeMillis() - tempsDeCalcul;
 		
-		System.out.println("Noeudkjbhkbjh :"+noeuds.size());
 		resultat = new Resultat(noeudCourant.getTrajetFromRacine(), noeuds.size(), tempsDeCalcul, parametres);
 			
 			

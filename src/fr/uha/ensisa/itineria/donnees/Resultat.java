@@ -60,12 +60,8 @@ public class Resultat {
 	 * @return
 	 */
 	public int getProfondeur()
-	{
-		// TODO
-		// QU'EST CE QUE LA PROFONDEUR ???
-		//int profondeur = trajet.get(trajet.size()-1).getV2();
-		int profondeur = 0;
-		return profondeur;
+	{		
+		return trajet.size();
 	}
 	
 	/**
@@ -76,10 +72,13 @@ public class Resultat {
 	public String toString()
 	{
 		StringBuilder str = new StringBuilder();
-		str.append("Trajet entre "+parametres.getDepart().getNom()+" et "+parametres.getArrivee().getNom()+":x\n");
+		Ville v1 = parametres.getDepart();
+		str.append("Trajet entre "+v1.getNom()+" et "+parametres.getArrivee().getNom()+":\n");		
 		for (Route r : trajet)
 		{
-			str.append(r.getV1().getNom()+" --> "+r.getV2().getNom()+"\n");
+			str.append(v1.getNom()+" --> "+r.getAutreVille(v1).getNom()+"\n");
+			v1 = r.getAutreVille(v1);
+			
 		}
 		str.append("\nDistance : "+getDistance()+"km");
 		str.append("\nDuree : "+getDuree()+" minutes");
