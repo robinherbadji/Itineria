@@ -4,6 +4,7 @@ package fr.uha.ensisa.itineria.moteur.algorithmes;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Queue;
 
 import fr.uha.ensisa.itineria.donnees.ArbreDeRecherche;
 import fr.uha.ensisa.itineria.donnees.Carte;
@@ -20,108 +21,78 @@ import fr.uha.ensisa.itineria.donnees.Ville;
  *
  */
 public class ParcoursEnLargeur extends Algorithme {
-	
-
+	private HashSet<Noeud> explored;
+	private Queue<Noeud> frontier;
 
 	public ParcoursEnLargeur(Carte carte, Parametres parametres) {
 		super(carte, parametres);
-		
+		explored = new HashSet<Noeud>();
+		frontier = new LinkedList<Noeud>();
 	}
-	
+
 	/**
 	 * 
 	 * @author Robin
 	 *
 	 */
-	public void launch()
-	{
-		// TODO
-		
-		long tempsDeCalcul = System.currentTimeMillis();
-		
-		LinkedList<Noeud> noeuds = new LinkedList<Noeud>();
-		LinkedList<Noeud> fileAttente = new LinkedList<Noeud>();
-		
-		Noeud racine = new Noeud(parametres.getDepart());
-		fileAttente.add(racine);		
-		Noeud noeudCourant = racine;
-		Ville villeCourante = noeudCourant.getVille();
-		do {
-			noeudCourant = fileAttente.pollFirst();
-			if (!noeuds.contains(noeudCourant)) {
-				noeuds.add(noeudCourant);
-				
-				villeCourante = noeudCourant.getVille();				
-				for (Route route : villeCourante.getRoutesVersVoisins()) {
-					Ville villeVoisine = route.getAutreVille(villeCourante);
-					System.out.println(noeudCourant.getProfondeur());
-					
-					Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant, route.getDistance(), noeudCourant.getProfondeur()+1);
-					fileAttente.add(noeudVoisin);
-					
-					
-					/*
-					if (villeVoisine != noeudCourant.getParent().getVille()) {
-						Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant, route.getDistance(), noeudCourant.getProfondeur()+1);
-						fileAttente.add(noeudVoisin);
-					}
-					*/
-					
-				}
-			}			
-			
-			
-			/*
-			System.out.println(villeCourante.getNom());
-			if (villeCourante == parametres.getArrivee()) {
-				break;
-			}
-			*/
+	public void launch() {
+		tempsDeCalcul = System.currentTimeMillis();
+
+		if (verifierObjectif(parametres.getDepart())) {
+			resultat = new Resultat(new ArrayList<Route>(), explored.size(), System.currentTimeMillis() - tempsDeCalcul,
+					parametres);
+			return;
 		}
-		while (!verifierObjectif(villeCourante));
-		tempsDeCalcul = System.currentTimeMillis() - tempsDeCalcul;
-		
-		resultat = new Resultat(noeudCourant.getTrajetFromRacine(), noeuds.size(), tempsDeCalcul, parametres);
-			
-			
-			
-			/*
-			LinkedList<Noeud> noeuds= new LinkedList<Noeud>();
-			
-			Ville ville_parente = parametres.getDepart();
-			Noeud racine = new Noeud(ville_parente); 
-			arbre = new ArbreDeRecherche(racine);
-			int profondeur = 0;
-			Noeud noeudParent = racine;
-			noeuds.add(noeudParent);
-			
-			HashSet<Ville> villesParcourues = new HashSet<Ville>();		
-			//while(!verifierObjectif(ville_parente)) {
-				villesParcourues.add(ville_parente);
-				ArrayList<Route> routes = ville_parente.getRoutesVersVoisins();
-				
-				for (Route route:routes) {
-					Ville villeVoisine = route.getAutreVille(ville_parente);
-					if(villesParcourues.add(villeVoisine)) {
-						System.out.println(route);
-						//Noeud noeud = new Noeud(villeVoisine, noeudParent, route.getDistance(), profondeur+1);
-						noeuds.add(new Noeud(villeVoisine, noeudParent, route.getDistance(), profondeur+1));
+
+		arbre = new ArbreDeRecherche(new Noeud(parametres.getDepart(), null, 0, 0));
+		frontier.add(arbre.getRacine());
+
+		Noeud noeudCourant = null;
+		Ville villeCourante = null;
+		while (!frontier.isEmpty()) {
+			noeudCourant = frontier.remove();
+			explored.add(noeudCourant);
+			villeCourante = noeudCourant.getVille();
+			for (Route route : villeCourante.getRoutesVersVoisins()) {
+				Ville villeVoisine = route.getAutreVille(villeCourante);
+				if (!villeDejaExplore(villeVoisine)) {
+					Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
+							noeudCourant.getCout() + route.getDistance(), noeudCourant.getProfondeur() + 1);
+					if (verifierObjectif(villeVoisine)) {
+						// Succès de l'Algo
+						resultat = new Resultat(noeudVoisin.getTrajetFromRacine(), explored.size(),
+								System.currentTimeMillis() - tempsDeCalcul, parametres);
+						return;
 					}
-					else {
-						System.out.println("prout");
-					}
+					frontier.add(noeudVoisin);
 				}
-				
-				if (noeuds.peekLast() != null)
-			
-			
-		//}
-		 
-		 */
-		
+			}
+		}
+
+		// Echec de l'Algo
+		tempsDeCalcul = System.currentTimeMillis() - tempsDeCalcul;
+		resultat = new Resultat(new ArrayList<Route>(), explored.size(), tempsDeCalcul, parametres);
+
+	}
+
+	/***
+	 * 
+	 * @author Robin
+	 * 
+	 *         Vérifie si la ville passée en paramèrtre a déjà été explorée
+	 * @param ville
+	 * @return
+	 */
+	private boolean villeDejaExplore(Ville ville) {
+		for (Noeud noeud : explored) {
+			if (noeud.getVille() == ville)
+				return true;
+		}
+		for (Noeud noeud : frontier) {
+			if (noeud.getVille() == ville)
+				return true;
+		}
+		return false;
 	}
 	
-	
-	
-
 }
