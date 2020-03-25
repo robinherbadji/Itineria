@@ -1,6 +1,7 @@
 package fr.uha.ensisa.itineria.donnees;
 
 import java.util.ArrayList;
+import java.util.Collections;
 /**
  * 
  * @author weber
@@ -49,23 +50,35 @@ public class Noeud {
 	}
 	
 	/**
+	 * @author Robin
+	 * 
 	 * Renvoie la liste des routes entre le noeud et la racine
 	 * @return
 	 */
 	public ArrayList<Route> getTrajetFromRacine()
-	{
-		//À compléter
-		return null;
+	{		
+		ArrayList<Route> trajet = new ArrayList<Route>();
+		if (parent != null) {
+			trajet.addAll(parent.getTrajetFromRacine());
+			trajet.add(parent.getVille().getRouteTo(ville));			
+		}		
+		return trajet;
 	}
 	
 	/**
+	 * @author Robin
+	 * 
 	 * Renvoie la liste des villes entre le noeud et la racine (les deux comprises)
 	 * @return
 	 */
 	public ArrayList<Ville> getVillesFromRacine()
 	{		
-		//À compl�ter
-		return null;
+		ArrayList<Ville> villes = new ArrayList<Ville>();
+		if (parent != null) {
+			villes.addAll(parent.getVillesFromRacine());			
+		}
+		villes.add(ville);
+		return villes;
 	}
 	
 	public void setCout(double cout) {
