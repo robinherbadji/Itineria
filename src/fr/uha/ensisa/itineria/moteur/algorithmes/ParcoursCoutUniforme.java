@@ -28,9 +28,9 @@ public class ParcoursCoutUniforme extends Algorithme {
 	public ParcoursCoutUniforme(Carte carte, Parametres parametres) {
 		super(carte, parametres);
 		explored = new HashSet<Noeud>();
-		frontier = new PriorityQueue<Noeud>(new ComparateurDeCout());		
-	}	
-	
+		frontier = new PriorityQueue<Noeud>(new ComparateurDeCout());
+	}
+
 	/***
 	 * 
 	 * @author Robin
@@ -40,77 +40,58 @@ public class ParcoursCoutUniforme extends Algorithme {
 
 		@Override
 		public int compare(Noeud n1, Noeud n2) {
-			if (n1.getCout() < n2.getCout()) {
-				return -1;
-			}
-			else if (n1.getCout() > n2.getCout()) {
-				return 1;
-			}
-			else {
-				return 0;
-			}
-		}		
+			return (int) (n1.getCout() - n2.getCout());
+		}
 	}
 	
-	public void launch()
-	{
+	public void launch() {
 		tempsDeCalcul = System.currentTimeMillis();
-		
+
 		arbre = new ArbreDeRecherche(new Noeud(parametres.getDepart(), null, 0, 0));
 		frontier.add(arbre.getRacine());
 
 		Noeud noeudCourant = null;
 		Ville villeCourante = null;
-		
+
 		while (!frontier.isEmpty()) {
 			noeudCourant = frontier.remove();
 			villeCourante = noeudCourant.getVille();
-			
+
 			// Succès de l'Algo
 			if (verifierObjectif(villeCourante)) {
-				resultat = new Resultat(noeudCourant.getTrajetFromRacine(), explored.size(), System.currentTimeMillis() - tempsDeCalcul,
-						parametres);
+				resultat = new Resultat(noeudCourant.getTrajetFromRacine(), explored.size(),
+						System.currentTimeMillis() - tempsDeCalcul, parametres);
 				return;
 			}
-			
+
 			explored.add(noeudCourant);
-			
-			System.out.println("Ville Courante : "+villeCourante);
-			
+
 			for (Route route : villeCourante.getRoutesVersVoisins()) {
-				Ville villeVoisine = route.getAutreVille(villeCourante);				
-				System.out.println(villeVoisine);
+				Ville villeVoisine = route.getAutreVille(villeCourante);
 				if (!villeDejaExplore(villeVoisine)) {
 					Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
 							noeudCourant.getCout() + route.getDistance(), noeudCourant.getProfondeur() + 1);
-					/*
-					// Succès de l'Algo
-					if (verifierObjectif(parametres.getDepart())) {
-						resultat = new Resultat(noeudVoisin.getTrajetFromRacine(), explored.size(), System.currentTimeMillis() - tempsDeCalcul,
-								parametres);
-						return;
-					}
-					*/
 					frontier.add(noeudVoisin);
 				}
-				
+
 				else {
+					Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
+							noeudCourant.getCout() + route.getDistance(), noeudCourant.getProfondeur() + 1);
 					Noeud noeudAncien = noeudDansFontiere(villeVoisine);
-					if (noeudAncien != null && noeudAncien.getCout() > noeudCourant.getCout()+route.getDistance()) {
+					if (noeudAncien != null && noeudAncien.getCout() > noeudVoisin.getCout()) {
 						frontier.remove(noeudAncien);
-						noeudAncien.setCout(noeudCourant.getCout()+route.getDistance());
-						frontier.add(noeudAncien);
+						frontier.add(noeudVoisin);
 					}
 				}
-					
 			}
 		}
 
 		// Echec de l'Algo
-		resultat = new Resultat(new ArrayList<Route>(), explored.size(), System.currentTimeMillis()-tempsDeCalcul, parametres);
-		
+		resultat = new Resultat(new ArrayList<Route>(), explored.size(), System.currentTimeMillis() - tempsDeCalcul,
+				parametres);
+
 	}
-	
+
 	/***
 	 * 
 	 * @author Robin
@@ -130,7 +111,15 @@ public class ParcoursCoutUniforme extends Algorithme {
 		}
 		return false;
 	}
-	
+
+	/***
+	 * @author Robin
+	 * 
+	 *         Renvoie la noeud correspondant à la ville passée en paramètre, s'il
+	 *         existe
+	 * @param ville
+	 * @return
+	 */
 	private Noeud noeudDansFontiere(Ville ville) {
 		for (Noeud noeud : frontier) {
 			if (noeud.getVille() == ville)
