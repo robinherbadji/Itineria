@@ -16,6 +16,7 @@ public class Console extends Thread {
 		super("console");
 	}
 	
+	/*
 	public void run()
 	{
 		int departementDepart, departementArrivee, methode, heuristique=-1, profondeurLimite=0;	
@@ -61,6 +62,21 @@ public class Console extends Thread {
 			}while(heuristique!=1&&heuristique!=2);
 		}
 		entry.close();
+		moteur.setParametres(departementDepart-1, departementArrivee-1, methode, heuristique, profondeurLimite);
+		moteur.run();
+		System.out.println(moteur.fromResultatToString());
+	}
+	*/
+	
+	public void run()
+	{
+		int departementDepart, departementArrivee, methode, heuristique=-1, profondeurLimite=0;	
+		
+		Moteur moteur = new Moteur();
+		departementDepart = 67;
+		departementArrivee = 64;
+		methode = 2;
+		
 		moteur.setParametres(departementDepart-1, departementArrivee-1, methode, heuristique, profondeurLimite);
 		moteur.run();
 		System.out.println(moteur.fromResultatToString());

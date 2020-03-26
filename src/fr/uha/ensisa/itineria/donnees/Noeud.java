@@ -1,7 +1,7 @@
 package fr.uha.ensisa.itineria.donnees;
 
 import java.util.ArrayList;
-import java.util.Collections;
+
 /**
  * 
  * @author weber

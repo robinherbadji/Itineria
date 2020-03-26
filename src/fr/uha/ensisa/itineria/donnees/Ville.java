@@ -63,7 +63,7 @@ public class Ville {
 	public Route getRouteTo(Ville v)
 	{
 		for (Route route : routesVersVoisins) {
-			if (route.getAutreVille(v).equals(this)) {
+			if (route.getAutreVille(v) == this) {
 				return route;
 			}
 		}
