@@ -44,6 +44,11 @@ public class ParcoursCoutUniforme extends Algorithme {
 		}
 	}
 	
+	/***
+	 * 
+	 * @author Robin
+	 *
+	 */
 	public void launch() {
 		tempsDeCalcul = System.currentTimeMillis();
 
