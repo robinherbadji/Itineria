@@ -43,22 +43,27 @@ public class ParcoursEnLargeur extends Algorithme {
 					parametres);
 			return;
 		}
-
+		
 		arbre = new ArbreDeRecherche(new Noeud(parametres.getDepart(), null, 0, 0));
 		frontier.add(arbre.getRacine());
 
 		Noeud noeudCourant = null;
 		Ville villeCourante = null;
+		
 		while (!frontier.isEmpty()) {
 			noeudCourant = frontier.remove();
 			explored.add(noeudCourant);
 			villeCourante = noeudCourant.getVille();
+			
 			for (Route route : villeCourante.getRoutesVersVoisins()) {
 				Ville villeVoisine = route.getAutreVille(villeCourante);
+				
 				if (!villeDejaExplore(villeVoisine)) {
 					Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
 							noeudCourant.getCout() + route.getDistance(), noeudCourant.getProfondeur() + 1);
+					
 					if (verifierObjectif(villeVoisine)) {
+						
 						// Succès de l'Algo
 						resultat = new Resultat(noeudVoisin.getTrajetFromRacine(), explored.size(),
 								System.currentTimeMillis() - tempsDeCalcul, parametres);
@@ -70,8 +75,7 @@ public class ParcoursEnLargeur extends Algorithme {
 		}
 
 		// Echec de l'Algo
-		tempsDeCalcul = System.currentTimeMillis() - tempsDeCalcul;
-		resultat = new Resultat(new ArrayList<Route>(), explored.size(), tempsDeCalcul, parametres);
+		resultat = new Resultat(new ArrayList<Route>(), explored.size(), System.currentTimeMillis()-tempsDeCalcul, parametres);
 
 	}
 
@@ -79,7 +83,7 @@ public class ParcoursEnLargeur extends Algorithme {
 	 * 
 	 * @author Robin
 	 * 
-	 *         Vérifie si la ville passée en paramèrtre a déjà été explorée
+	 *         Vérifie si la ville passée en paramètre a déjà été explorée
 	 * @param ville
 	 * @return
 	 */
