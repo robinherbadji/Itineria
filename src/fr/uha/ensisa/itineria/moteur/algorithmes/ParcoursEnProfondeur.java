@@ -23,6 +23,7 @@ public class ParcoursEnProfondeur extends Algorithme {
 	private HashSet<Noeud> explored;
 	//private Queue<Noeud> frontier;
 	private int limit;
+	private Noeud noeudFinal;
 
 
 	public ParcoursEnProfondeur(Carte carte, Parametres parametres) {
@@ -30,6 +31,7 @@ public class ParcoursEnProfondeur extends Algorithme {
 		explored = new HashSet<Noeud>();
 		//frontier = new LinkedList<Noeud>();
 		limit = 95;
+		noeudFinal = null;
 	}
 	
 	/***
@@ -44,7 +46,8 @@ public class ParcoursEnProfondeur extends Algorithme {
 	        for all neighbours w of s in Graph G:
 	            if w is not visited:
 	                DFS-recursive(G, w)
-	    */        
+	    */
+		System.out.println("Parcours en Profondeur");
 		tempsDeCalcul = System.currentTimeMillis();
 		
 		arbre = new ArbreDeRecherche(new Noeud(parametres.getDepart(), null, 0, 0));
@@ -76,6 +79,87 @@ public class ParcoursEnProfondeur extends Algorithme {
 		*/
 	}
 	
+	private Noeud DFS(Noeud noeudCourant) {
+		Ville villeCourante = noeudCourant.getVille();
+		//explored.add(noeudCourant);
+		System.out.println("Ville Courante : "+villeCourante);
+		
+		if (noeudFinal != null) {			
+			// Succès de l'Algo
+			System.out.println("crouroucour");
+			resultat = new Resultat(noeudFinal.getTrajetFromRacine(), explored.size(),
+					System.currentTimeMillis() - tempsDeCalcul, parametres);
+			return noeudFinal;
+		}
+		
+		if (verifierObjectif(villeCourante)) {			
+			// Succès de l'Algo
+			resultat = new Resultat(noeudCourant.getTrajetFromRacine(), explored.size(),
+					System.currentTimeMillis() - tempsDeCalcul, parametres);
+			return noeudCourant;
+		}
+		
+		else if (noeudCourant.getProfondeur() > limit) {
+			// Echec de l'algo
+			resultat = new Resultat(new ArrayList<Route>(), explored.size(),
+					System.currentTimeMillis() - tempsDeCalcul, parametres);
+			return null;
+		}
+		
+		for (Route route : villeCourante.getRoutesVersVoisins()) {
+			if (noeudFinal != null) {			
+				// Succès de l'Algo
+				System.out.println("crouroucour");
+				resultat = new Resultat(noeudFinal.getTrajetFromRacine(), explored.size(),
+						System.currentTimeMillis() - tempsDeCalcul, parametres);
+				return noeudFinal;
+			}
+			
+			Ville villeVoisine = route.getAutreVille(villeCourante);
+			System.out.println(villeVoisine);			
+			
+			
+			if (verifierObjectif(villeVoisine)) {			
+				// Succès de l'Algo
+				System.out.println("prout");
+				Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
+						noeudCourant.getCout() + route.getDistance(), noeudCourant.getProfondeur() + 1);
+				explored.add(noeudVoisin);
+				resultat = new Resultat(noeudVoisin.getTrajetFromRacine(), explored.size(),
+						System.currentTimeMillis() - tempsDeCalcul, parametres);
+				return noeudVoisin;
+			}
+			
+			if (verifierObjectif(villeVoisine)) {			
+				// Succès de l'Algo
+				System.out.println("qcaca");
+				Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
+						noeudCourant.getCout() + route.getDistance(), noeudCourant.getProfondeur() + 1);
+				resultat = new Resultat(noeudVoisin.getTrajetFromRacine(), explored.size(),
+						System.currentTimeMillis() - tempsDeCalcul, parametres);
+				return noeudVoisin;
+			}
+					
+			if (!villeDejaExplore(villeVoisine)) {
+				
+				System.out.println(villeVoisine);
+				Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
+						noeudCourant.getCout() + route.getDistance(), noeudCourant.getProfondeur() + 1);
+				explored.add(noeudVoisin);
+				if (verifierObjectif(villeVoisine)) {			
+					// Succès de l'Algo
+					resultat = new Resultat(noeudVoisin.getTrajetFromRacine(), explored.size(),
+							System.currentTimeMillis() - tempsDeCalcul, parametres);
+					return noeudVoisin;
+				}
+				
+				noeudFinal = DFS(noeudVoisin);				
+			}
+		}		
+		return null;		
+	}
+	
+	/*
 	private void DFS(Noeud noeudCourant) {
 		Ville villeCourante = noeudCourant.getVille();
 		//explored.add(noeudCourant);
@@ -87,33 +171,55 @@ public class ParcoursEnProfondeur extends Algorithme {
 					System.currentTimeMillis() - tempsDeCalcul, parametres);
 			return;
 		}
-		/*
+		
 		else if (noeudCourant.getProfondeur() > limit) {
 			// Echec de l'algo
 			resultat = new Resultat(new ArrayList<Route>(), explored.size(),
 					System.currentTimeMillis() - tempsDeCalcul, parametres);
 			return;
 		}
-		*/
+		
 		for (Route route : villeCourante.getRoutesVersVoisins()) {
 			Ville villeVoisine = route.getAutreVille(villeCourante);
 			System.out.println(villeVoisine);
 			
-			if (!villeDejaExplore(villeVoisine)) {
+			if (verifierObjectif(villeVoisine)) {			
+				// Succès de l'Algo
+				System.out.println("prout");
 				Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
 						noeudCourant.getCout() + route.getDistance(), noeudCourant.getProfondeur() + 1);
 				explored.add(noeudVoisin);
-				if (verifierObjectif(villeCourante)) {			
+				resultat = new Resultat(noeudVoisin.getTrajetFromRacine(), explored.size(),
+						System.currentTimeMillis() - tempsDeCalcul, parametres);
+				return;
+			}
+			
+			if (verifierObjectif(villeVoisine)) {			
+				// Succès de l'Algo
+				resultat = new Resultat(noeudVoisin.getTrajetFromRacine(), explored.size(),
+						System.currentTimeMillis() - tempsDeCalcul, parametres);
+				return;
+			}
+			
+			if (!villeDejaExplore(villeVoisine)) {
+				
+				System.out.println(villeVoisine);
+				Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
+						noeudCourant.getCout() + route.getDistance(), noeudCourant.getProfondeur() + 1);
+				explored.add(noeudVoisin);
+				if (verifierObjectif(villeVoisine)) {			
 					// Succès de l'Algo
 					resultat = new Resultat(noeudVoisin.getTrajetFromRacine(), explored.size(),
 							System.currentTimeMillis() - tempsDeCalcul, parametres);
 					return;
-				}				
+				}
+				
 				DFS(noeudVoisin);				
 			}
 		}		
 				
 	}
+	*/
 	
 	
 	/***

@@ -71,7 +71,7 @@ public class Resultat {
 	 */
 	public String toString()
 	{
-		StringBuilder str = new StringBuilder();
+		StringBuilder str = new StringBuilder("\n");
 		Ville v1 = parametres.getDepart();
 		str.append("Trajet entre "+v1.getNom()+" et "+parametres.getArrivee().getNom()+":\n");		
 		for (Route r : trajet)
