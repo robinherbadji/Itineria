@@ -73,9 +73,18 @@ public class Console extends Thread {
 		int departementDepart, departementArrivee, methode, heuristique=-1, profondeurLimite=0;	
 		
 		Moteur moteur = new Moteur();
+		/*
 		departementDepart = 67;
 		departementArrivee = 64;
 		methode = 2;
+		*/
+		
+		departementDepart = 67;
+		departementArrivee = 64;
+		methode = 6; // Glouton
+		//methode = 7; // temps restant
+		heuristique = 0; //Oiseau
+		//heuristique = 1; //temps restant
 		
 		moteur.setParametres(departementDepart-1, departementArrivee-1, methode, heuristique, profondeurLimite);
 		moteur.run();

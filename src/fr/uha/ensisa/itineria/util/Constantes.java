@@ -27,4 +27,7 @@ public abstract class Constantes {
 	public static final int HEURISTIQUE_TEMPS = 1;
 	
 	public static final String NOM_HEURISTIQUE[] = {"Vol d'oiseau", "Temps restant"};
+	
+	public static final double RAYON_TERRESTRE =  6372.8; // km
+	public static final double VITESSE_MOYENNE =  80; // km/h
 }
