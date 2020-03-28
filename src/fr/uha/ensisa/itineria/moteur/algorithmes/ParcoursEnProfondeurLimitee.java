@@ -53,15 +53,13 @@ public class ParcoursEnProfondeurLimitee extends Algorithme {
 		DFS(arbre.getRacine());
 		
 	}
-	
-	
+	/*
 	private Noeud DFS(Noeud noeudCourant) {
 		Ville villeCourante = noeudCourant.getVille();
 		//explored.add(noeudCourant);
 		//System.out.println("Ville Courante : "+villeCourante);
 		
-		
-		if (verifierObjectif(villeCourante)) {			
+		if (verifierObjectif(villeCourante)) {	
 			// Succès de l'Algo
 			//explored.add(noeudCourant);
 			resultat = new Resultat(noeudCourant.getTrajetFromRacine(), explored.size(),
@@ -69,12 +67,13 @@ public class ParcoursEnProfondeurLimitee extends Algorithme {
 			return noeudCourant;
 		}
 		
-		else if (noeudCourant.getProfondeur() > parametres.getProfondeurLimite()) {
+		else if (noeudCourant.getProfondeur() >= parametres.getProfondeurLimite()-1) {
 			// Echec de l'algo
 			resultat = new Resultat(new ArrayList<Route>(), explored.size(),
 					System.currentTimeMillis() - tempsDeCalcul, parametres);
 			//cutoff_occurred = true;
 			return new Noeud(null,null,-1,parametres.getProfondeurLimite());
+			//return null;
 		}
 		
 		else {
@@ -83,69 +82,120 @@ public class ParcoursEnProfondeurLimitee extends Algorithme {
 			for (Route route : villeCourante.getRoutesVersVoisins()) {
 				Ville villeVoisine = route.getAutreVille(villeCourante);
 				if (!villeDejaExplore(villeVoisine)) {
+				//if (!routeDejaEmprumptee(villeVoisine,noeudCourant)) {
 					Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
 							noeudCourant.getCout()+route.getDistance(), noeudCourant.getProfondeur()+1);
 					explored.add(noeudVoisin);					
 					result = DFS(noeudVoisin);
 					
-					//if (result == null) {
-					if (result.getProfondeur() == parametres.getProfondeurLimite()) {
+					if (result == null) {
+					System.out.println(result.getVille());
+					//if (result.getProfondeur() == parametres.getProfondeurLimite()) {
 						cutoff_occurred = true;
 					}
 					else {
 						return result;
-					}					
+					}				
 				}				
 			}
 			if (cutoff_occurred) {
 				return new Noeud(null,null,-1,parametres.getProfondeurLimite());
+				//return null;
 			}
 			return null;
 		}
+		*/
+	
+	/*
+	private Noeud DFS(Noeud noeudCourant) {
+		Ville villeCourante = noeudCourant.getVille();
+		if (explored.contains(noeudCourant)) {
+			return null;
+		}
 		
+		explored.add(noeudCourant);
+		//System.out.println("Ville Courante : "+villeCourante);
 		
-		
-		
+		if (verifierObjectif(villeCourante)) {	
+			// Succès de l'Algo
+			//explored.add(noeudCourant);
+			resultat = new Resultat(noeudCourant.getTrajetFromRacine(), explored.size(),
+					System.currentTimeMillis() - tempsDeCalcul, parametres);
+			return noeudCourant;
+		}
 		/*
+		else if (noeudCourant.getProfondeur() >= parametres.getProfondeurLimite()-1) {
+			// Echec de l'algo
+			resultat = new Resultat(new ArrayList<Route>(), explored.size(),
+					System.currentTimeMillis() - tempsDeCalcul, parametres);
+			//cutoff_occurred = true;
+			return new Noeud(null,null,-1,parametres.getProfondeurLimite());
+			//return null;
+		}
+		
+		
 		for (Route route : villeCourante.getRoutesVersVoisins()) {
 			Ville villeVoisine = route.getAutreVille(villeCourante);
-			System.out.println(villeVoisine);
-			
-			if (verifierObjectif(villeVoisine)) {			
-				// Succès de l'Algo
-				System.out.println("prout");
+			Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
+					noeudCourant.getCout()+route.getDistance(), noeudCourant.getProfondeur()+1);
+			if (DFS(noeudVoisin) != null) {
+				return noeudVoisin;
+			}						
+		}
+		return null;					
+	}
+	*/
+	
+	
+	private Noeud DFS(Noeud noeudCourant) {
+		Ville villeCourante = noeudCourant.getVille();
+		explored.add(noeudCourant);
+		System.out.println("Ville Courante : "+villeCourante);
+		
+		if (verifierObjectif(villeCourante)) {	
+			// Succès de l'Algo
+			//explored.add(noeudCourant);
+			resultat = new Resultat(noeudCourant.getTrajetFromRacine(), explored.size(),
+					System.currentTimeMillis() - tempsDeCalcul, parametres);
+			return noeudCourant;
+		}
+		
+		else if (noeudCourant.getProfondeur() >= parametres.getProfondeurLimite()-1) {
+			// Echec de l'algo
+			resultat = new Resultat(new ArrayList<Route>(), explored.size(),
+					System.currentTimeMillis() - tempsDeCalcul, parametres);
+			//cutoff_occurred = true;
+			//return new Noeud(null,null,-1,parametres.getProfondeurLimite());
+			return null;
+		}
+		System.out.print("[");
+		for (Route route : villeCourante.getRoutesVersVoisins()) {
+			Ville villeVoisine = route.getAutreVille(villeCourante);
+			//if (!villeDejaExplore(villeVoisine)) {
+			if (!routeDejaEmprumptee(villeVoisine,noeudCourant)) {
 				Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
-						noeudCourant.getCout() + route.getDistance(), noeudCourant.getProfondeur() + 1);
+						noeudCourant.getCout()+route.getDistance(), noeudCourant.getProfondeur()+1);
 				explored.add(noeudVoisin);
-				resultat = new Resultat(noeudVoisin.getTrajetFromRacine(), explored.size(),
-						System.currentTimeMillis() - tempsDeCalcul, parametres);
-				return;
+				result = DFS(noeudVoisin);				
 			}
-			
-			if (verifierObjectif(villeVoisine)) {			
-				// Succès de l'Algo
-				resultat = new Resultat(noeudVoisin.getTrajetFromRacine(), explored.size(),
-						System.currentTimeMillis() - tempsDeCalcul, parametres);
-				return;
-			}
-			
-			if (!villeDejaExplore(villeVoisine)) {
-				
-				System.out.println(villeVoisine);
-				Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
-						noeudCourant.getCout() + route.getDistance(), noeudCourant.getProfondeur() + 1);
-				explored.add(noeudVoisin);
-				if (verifierObjectif(villeVoisine)) {			
-					// Succès de l'Algo
-					resultat = new Resultat(noeudVoisin.getTrajetFromRacine(), explored.size(),
-							System.currentTimeMillis() - tempsDeCalcul, parametres);
-					return;
-				}
-				
-				DFS(noeudVoisin);				
+			else {
+				return null;
 			}
 		}
-		*/				
+		System.out.println("] "+villeCourante);
+		return result;					
+	}
+	
+	
+	
+	private boolean routeDejaEmprumptee(Ville ville, Noeud parent) {
+		for (Noeud noeud : explored) {
+			if (noeud.getVille() == ville /*&& noeud.getParent() == parent*/)
+				if (noeud == parent.getParent()) {
+					return true;
+				}				
+		}
+		return false;
 	}
 	
 	

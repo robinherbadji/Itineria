@@ -82,8 +82,9 @@ public class Console extends Thread {
 		
 		departementDepart = 67;
 		departementArrivee = 64;
+		//departementArrivee = 64;
 		methode = 4;
-		profondeurLimite = 95;
+		profondeurLimite = 25;
 		//heuristique = 1;
 		
 		moteur.setParametres(departementDepart-1, departementArrivee-1, methode, heuristique, profondeurLimite);
