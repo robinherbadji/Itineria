@@ -44,6 +44,11 @@ public class ParcoursCoutUniforme extends Algorithme {
 		}
 	}
 	
+	/***
+	 * 
+	 * @author Robin
+	 *
+	 */
 	public void launch() {
 		tempsDeCalcul = System.currentTimeMillis();
 
@@ -93,12 +98,12 @@ public class ParcoursCoutUniforme extends Algorithme {
 	}
 
 	/***
+	 * Vérifie si la ville passée en paramètre a déjà été explorée
 	 * 
-	 * @author Robin
-	 * 
-	 *         Vérifie si la ville passée en paramètre a déjà été explorée
 	 * @param ville
-	 * @return
+	 * @return - true si ville a déjà été explorée;</br>
+	 *         - false sinon
+	 * @author Robin
 	 */
 	private boolean villeDejaExplore(Ville ville) {
 		for (Noeud noeud : explored) {
@@ -113,12 +118,12 @@ public class ParcoursCoutUniforme extends Algorithme {
 	}
 
 	/***
-	 * @author Robin
+	 * Renvoie le noeud correspondant à la ville passée en paramètre, s'il existe
 	 * 
-	 *         Renvoie la noeud correspondant à la ville passée en paramètre, s'il
-	 *         existe
 	 * @param ville
-	 * @return
+	 * @return le noeud correspondant à ville ou null
+	 * 
+	 * @author Robin
 	 */
 	private Noeud noeudDansFontiere(Ville ville) {
 		for (Noeud noeud : frontier) {
