@@ -54,11 +54,11 @@ public class Ville {
 	}
 	
 	/**
-	 * @author Robin
-	 * 
 	 * Renvoie la route reliant la ville voisine donnée en argument
+	 * 
 	 * @param v
 	 * @return
+	 * @author Robin
 	 */
 	public Route getRouteTo(Ville v)
 	{

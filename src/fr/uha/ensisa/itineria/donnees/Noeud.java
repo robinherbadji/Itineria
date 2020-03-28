@@ -50,10 +50,10 @@ public class Noeud {
 	}
 	
 	/**
-	 * @author Robin
-	 * 
 	 * Renvoie la liste des routes entre le noeud et la racine
+	 * 
 	 * @return
+	 * @author Robin
 	 */
 	public ArrayList<Route> getTrajetFromRacine()
 	{		
@@ -66,10 +66,10 @@ public class Noeud {
 	}
 	
 	/**
-	 * @author Robin
-	 * 
 	 * Renvoie la liste des villes entre le noeud et la racine (les deux comprises)
+	 * 
 	 * @return
+	 * @author Robin
 	 */
 	public ArrayList<Ville> getVillesFromRacine()
 	{		
