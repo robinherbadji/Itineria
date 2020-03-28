@@ -81,8 +81,8 @@ public class Console extends Thread {
 		
 		departementDepart = 67;
 		departementArrivee = 64;
-		methode = 6; // Glouton
-		//methode = 7; // temps restant
+		//methode = 6; // Glouton
+		methode = 7; // A*
 		//heuristique = 0; //Oiseau
 		heuristique = 1; //temps restant
 		

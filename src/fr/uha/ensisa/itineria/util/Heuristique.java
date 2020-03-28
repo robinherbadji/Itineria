@@ -10,6 +10,7 @@ import fr.uha.ensisa.itineria.util.Constantes;
  */
 public abstract class Heuristique {
 	
+	
 	/**
 	 * Renvoie la distance vol d'oiseau entre 2 villes
 	 * 
@@ -48,6 +49,7 @@ public abstract class Heuristique {
 		return temps;
 	}
 	
+	
 	/**
 	 * Calcule une heuristique entre deux villes
 	 * @param heuristique
@@ -76,7 +78,5 @@ public abstract class Heuristique {
 	public static double carre(double val) {
 		return val*val;
 	}
-	
-	
 	
 }

@@ -28,7 +28,7 @@ public class RechercheGloutonne extends Algorithme {
 	public RechercheGloutonne(Carte carte, Parametres parametres) {
 		super(carte, parametres);
 		explored = new HashSet<Noeud>();
-		frontier = new PriorityQueue<Noeud>(new ComparateurDeCout());		
+		frontier = new PriorityQueue<Noeud>(new ComparateurGlouton());		
 	}
 	
 	/***
@@ -36,7 +36,7 @@ public class RechercheGloutonne extends Algorithme {
 	 * @author Robin
 	 *
 	 */
-	private class ComparateurDeCout implements Comparator<Noeud> {
+	private class ComparateurGlouton implements Comparator<Noeud> {
 
 		@Override
 		public int compare(Noeud n1, Noeud n2) {
@@ -51,40 +51,24 @@ public class RechercheGloutonne extends Algorithme {
 	 * @author Robin
 	 *
 	 */
-	public void launch()
-	{
+	public void launch() {
 		System.out.println("Recherche gloutonne :");
 		tempsDeCalcul = System.currentTimeMillis();
 
 		arbre = new ArbreDeRecherche(new Noeud(parametres.getDepart(), null, 0, 0));
 		frontier.add(arbre.getRacine());
-
-		Noeud noeudCourant = arbre.getRacine();
 		
-		rechercheGloutonne(noeudCourant);
-		
-		/*
-		Ville villeCourante = noeudCourant.getVille();
-		
-		for (Route route : villeCourante.getRoutesVersVoisins()) {
-			Ville villeVoisine = route.getAutreVille(villeCourante);
-			Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
-					noeudCourant.getCout() + route.getDistance(), noeudCourant.getProfondeur() + 1);
-			frontier.add(noeudVoisin);
-		}
-		
-		while (!frontier.isEmpty()) {
-			System.out.println(frontier.poll().getVille());
-		}
-		
-		Ville ville1 = carte.getVille(67);
-		Ville ville2 = carte.getVille(66);
-		
-		System.out.println(ville1.getNom()+"-"+ville2.getNom()+" : "+Heuristique.getVolOiseau(ville1,ville2));
-		System.out.println("Temps : "+Heuristique.getTempsRestant(ville1,ville2));
-		*/
+		rechercheGloutonne(arbre.getRacine());
 	}
 	
+	
+	/**
+	 * Cherche le Noeud solution de l'algorithme de Recherche Gloutonne (Greedy Best First Search en anglais)
+	 * 
+	 * @param noeudCourant
+	 * @return
+	 * @author Robin
+	 */
 	public void rechercheGloutonne(Noeud noeudCourant) {
 		while (!frontier.isEmpty()) {
 			noeudCourant = frontier.remove();
