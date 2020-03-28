@@ -20,11 +20,13 @@ public class Resultat {
 		this.tempsDeCalcul=tempsDeCalcul;
 		this.parametres=parametres;
 	}
+	
+	
 	/**
-	 * @author Robin
-	 * 
 	 * Renvoie la longueur en km du trajet résultat
+	 * 
 	 * @return
+	 * @author Robin
 	 */
 	public int getDistance()
 	{
@@ -37,10 +39,10 @@ public class Resultat {
 	}
 	
 	/**
-	 * @author Robin
-	 * 
 	 * Renvoie la durée du trajet résultat
+	 * 
 	 * @return
+	 * @author Robin
 	 */
 	public int getDuree()
 	{
@@ -54,10 +56,10 @@ public class Resultat {
 	
 	
 	/**
-	 * @author Robin
-	 * 
 	 * Renvoie la profondeur du trajet résultat
+	 * 
 	 * @return
+	 * @author Robin
 	 */
 	public int getProfondeur()
 	{		
@@ -65,13 +67,13 @@ public class Resultat {
 	}
 	
 	/**
-	 * @author Robin
-	 * 
 	 * Renvoie une présentation textuelle de Résultat pour un affichage dans la console par exemple
+	 * 
+	 * @author Robin
 	 */
 	public String toString()
 	{
-		StringBuilder str = new StringBuilder("\n");
+		StringBuilder str = new StringBuilder();
 		Ville v1 = parametres.getDepart();
 		str.append("Trajet entre "+v1.getNom()+" et "+parametres.getArrivee().getNom()+":\n");		
 		for (Route r : trajet)

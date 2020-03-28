@@ -46,14 +46,23 @@ public class ParcoursEnLargeur extends Algorithme {
 		
 		arbre = new ArbreDeRecherche(new Noeud(parametres.getDepart(), null, 0, 0));
 		frontier.add(arbre.getRacine());
-
-		Noeud noeudCourant = null;
-		Ville villeCourante = null;
 		
+		parcoursEnLargeur(arbre.getRacine());
+	}
+	
+	
+	/**
+	 * Cherche le Noeud solution de l'algorithme de Parcours en Largeur (BFS en anglais)
+	 * 
+	 * @param noeudCourant
+	 * @return
+	 * @author Robin
+	 */
+	public void parcoursEnLargeur(Noeud noeudCourant) {
 		while (!frontier.isEmpty()) {
 			noeudCourant = frontier.remove();
 			explored.add(noeudCourant);
-			villeCourante = noeudCourant.getVille();
+			Ville villeCourante = noeudCourant.getVille();
 			
 			for (Route route : villeCourante.getRoutesVersVoisins()) {
 				Ville villeVoisine = route.getAutreVille(villeCourante);
@@ -73,19 +82,18 @@ public class ParcoursEnLargeur extends Algorithme {
 				}
 			}
 		}
-
 		// Echec de l'Algo
 		resultat = new Resultat(new ArrayList<Route>(), explored.size(), System.currentTimeMillis()-tempsDeCalcul, parametres);
 	}
 	
 
+	
 	/***
+	 * Vérifie si la ville passée en paramètre a déjà été explorée
 	 * 
-	 * @author Robin
-	 * 
-	 *         Vérifie si la ville passée en paramètre a déjà été explorée
 	 * @param ville
 	 * @return
+	 * @author Robin
 	 */
 	private boolean villeDejaExplore(Ville ville) {
 		for (Noeud noeud : explored) {

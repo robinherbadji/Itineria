@@ -44,6 +44,7 @@ public class ParcoursCoutUniforme extends Algorithme {
 		}
 	}
 	
+
 	/***
 	 * 
 	 * @author Robin
@@ -54,13 +55,22 @@ public class ParcoursCoutUniforme extends Algorithme {
 
 		arbre = new ArbreDeRecherche(new Noeud(parametres.getDepart(), null, 0, 0));
 		frontier.add(arbre.getRacine());
-
-		Noeud noeudCourant = null;
-		Ville villeCourante = null;
-
+		
+		parcoursCoutUniforme(arbre.getRacine());
+	}
+	
+	
+	/**
+	 * Cherche le Noeud solution de l'algorithme Cout Uniforme (UCS en anglais)
+	 * 
+	 * @param noeudCourant
+	 * @return
+	 * @author Robin
+	 */
+	public void parcoursCoutUniforme(Noeud noeudCourant) {
 		while (!frontier.isEmpty()) {
 			noeudCourant = frontier.remove();
-			villeCourante = noeudCourant.getVille();
+			Ville villeCourante = noeudCourant.getVille();
 
 			// Succès de l'Algo
 			if (verifierObjectif(villeCourante)) {
@@ -90,20 +100,20 @@ public class ParcoursCoutUniforme extends Algorithme {
 				}
 			}
 		}
-
 		// Echec de l'Algo
 		resultat = new Resultat(new ArrayList<Route>(), explored.size(), System.currentTimeMillis() - tempsDeCalcul,
 				parametres);
-
 	}
 
+	
+
 	/***
+	 * Vérifie si la ville passée en paramètre a déjà été explorée
 	 * 
-	 * @author Robin
-	 * 
-	 *         Vérifie si la ville passée en paramètre a déjà été explorée
 	 * @param ville
-	 * @return
+	 * @return - true si ville a déjà été explorée;</br>
+	 *         - false sinon
+	 * @author Robin
 	 */
 	private boolean villeDejaExplore(Ville ville) {
 		for (Noeud noeud : explored) {
@@ -118,12 +128,12 @@ public class ParcoursCoutUniforme extends Algorithme {
 	}
 
 	/***
-	 * @author Robin
+	 * Renvoie le noeud correspondant à la ville passée en paramètre, s'il existe
 	 * 
-	 *         Renvoie la noeud correspondant à la ville passée en paramètre, s'il
-	 *         existe
 	 * @param ville
-	 * @return
+	 * @return le noeud correspondant à ville ou null
+	 * 
+	 * @author Robin
 	 */
 	private Noeud noeudDansFontiere(Ville ville) {
 		for (Noeud noeud : frontier) {
