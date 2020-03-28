@@ -70,7 +70,7 @@ public class Console extends Thread {
 	
 	public void run()
 	{
-		int departementDepart, departementArrivee, methode, heuristique=-1, profondeurLimite=0;	
+		int departementDepart, departementArrivee, methode, heuristique=-1, profondeurLimite=0;
 		
 		Moteur moteur = new Moteur();
 		/*
@@ -84,7 +84,7 @@ public class Console extends Thread {
 		//methode = 6; // Glouton
 		methode = 7; // A*
 		//heuristique = 0; //Oiseau
-		heuristique = 1; //temps restant
+		heuristique = 2; //temps restant
 		
 		moteur.setParametres(departementDepart-1, departementArrivee-1, methode, heuristique, profondeurLimite);
 		moteur.run();

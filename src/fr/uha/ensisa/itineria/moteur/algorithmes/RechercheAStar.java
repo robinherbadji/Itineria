@@ -1,6 +1,7 @@
 package fr.uha.ensisa.itineria.moteur.algorithmes;
 
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.PriorityQueue;
@@ -13,6 +14,7 @@ import fr.uha.ensisa.itineria.donnees.Parametres;
 import fr.uha.ensisa.itineria.donnees.Resultat;
 import fr.uha.ensisa.itineria.donnees.Route;
 import fr.uha.ensisa.itineria.donnees.Ville;
+import fr.uha.ensisa.itineria.util.Constantes;
 import fr.uha.ensisa.itineria.util.Heuristique;
 
 
@@ -40,10 +42,14 @@ public class RechercheAStar extends Algorithme {
 
 		@Override
 		public int compare(Noeud n1, Noeud n2) {
-			double g1 = n1.getCout();
-			double g2 = n2.getCout();
 			double h1 = Heuristique.calcul(parametres.getHeuristique(), n1.getVille(), parametres.getArrivee());
 			double h2 = Heuristique.calcul(parametres.getHeuristique(), n2.getVille(), parametres.getArrivee());
+			double g1 = n1.getCout();
+			double g2 = n2.getCout();
+			if (parametres.getHeuristique() == Constantes.HEURISTIQUE_TEMPS) {
+				g1 = getDuree(n1.getTrajetFromRacine());
+				g2 = getDuree(n2.getTrajetFromRacine());
+			}			
 			return (int) ((h1+g1) - (h2+g2));
 		}
 	}
@@ -142,6 +148,21 @@ public class RechercheAStar extends Algorithme {
 				return noeud;
 		}
 		return null;
-	}	
+	}
+	
+	/**
+	 * Renvoie la duree en minutes depuis le depart 
+	 * 
+	 * @param trajet
+	 * @return la duree en minutes depuis le départ
+	 * @author Robin
+	 */
+	private int getDuree(ArrayList<Route> trajet) {
+		int duree = 0;
+		for(Route r: trajet) {
+			duree+=r.getDuree();
+		}
+		return duree;
+	}
 
 }

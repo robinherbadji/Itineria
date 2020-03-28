@@ -44,11 +44,10 @@ public abstract class Heuristique {
 	 * @see Constantes.VITESSE_MOYENNE Vitesse Moyenne
 	 */
 	public static double getTempsRestant(Ville v1, Ville v2)
-	{		
+	{
 		double temps = 60*getVolOiseau(v1,v2)/Constantes.VITESSE_MOYENNE;
 		return temps;
 	}
-	
 	
 	/**
 	 * Calcule une heuristique entre deux villes
