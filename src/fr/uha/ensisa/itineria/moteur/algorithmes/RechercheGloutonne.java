@@ -13,6 +13,7 @@ import fr.uha.ensisa.itineria.donnees.Parametres;
 import fr.uha.ensisa.itineria.donnees.Resultat;
 import fr.uha.ensisa.itineria.donnees.Route;
 import fr.uha.ensisa.itineria.donnees.Ville;
+import fr.uha.ensisa.itineria.util.Constantes;
 import fr.uha.ensisa.itineria.util.Heuristique;
 
 
@@ -74,10 +75,11 @@ public class RechercheGloutonne extends Algorithme {
 			noeudCourant = frontier.remove();
 			Ville villeCourante = noeudCourant.getVille();
 			explored.add(noeudCourant);
+			nbNoeudsExplores++;
 
 			// Succès de l'Algo
 			if (verifierObjectif(villeCourante)) {
-				resultat = new Resultat(noeudCourant.getTrajetFromRacine(), explored.size(),
+				resultat = new Resultat(noeudCourant.getTrajetFromRacine(), nbNoeudsExplores,
 						System.currentTimeMillis() - tempsDeCalcul, parametres);
 				return;
 			}			
@@ -86,13 +88,13 @@ public class RechercheGloutonne extends Algorithme {
 				Ville villeVoisine = route.getAutreVille(villeCourante);
 				if (!villeDejaExplore(villeVoisine)) {
 					Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
-							noeudCourant.getCout() + route.getDistance(), noeudCourant.getProfondeur() + 1);
+							calculCout(noeudCourant, route), noeudCourant.getProfondeur() + 1);
 					frontier.add(noeudVoisin);
 				}
 
 				else {
 					Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
-							noeudCourant.getCout() + route.getDistance(), noeudCourant.getProfondeur() + 1);
+							calculCout(noeudCourant, route), noeudCourant.getProfondeur() + 1);
 					Noeud noeudAncien = noeudDansFontiere(villeVoisine);
 					if (noeudAncien != null && noeudAncien.getCout() > noeudVoisin.getCout()) {
 						frontier.remove(noeudAncien);
@@ -139,6 +141,25 @@ public class RechercheGloutonne extends Algorithme {
 				return noeud;
 		}
 		return null;
+	}
+	
+	/**
+	 * Renvoie le cout pour aller à la ville voisine selon l'heuristique choisie
+	 * 
+	 * @param noeud
+	 * @param route
+	 * @return le cout en minutes ou en kilomètres
+	 * @author Robin
+	 */
+	private double calculCout(Noeud noeud, Route route) {
+		double coutRoute;
+		if (parametres.getHeuristique() == Constantes.HEURISTIQUE_TEMPS) {
+			coutRoute = route.getDuree();
+		}
+		else {
+			coutRoute = route.getDistance();
+		}
+		return noeud.getCout() + coutRoute;
 	}
 
 }
