@@ -16,7 +16,6 @@ public class Console extends Thread {
 		super("console");
 	}
 	
-	/*
 	public void run()
 	{
 		int departementDepart, departementArrivee, methode, heuristique=-1, profondeurLimite=0;	
@@ -66,9 +65,8 @@ public class Console extends Thread {
 		moteur.run();
 		System.out.println(moteur.fromResultatToString());
 	}
-	*/
 	
-	
+	/*
 	public void run()
 	{
 		int departementDepart, departementArrivee, methode, heuristique=-1, profondeurLimite=0;
@@ -88,5 +86,6 @@ public class Console extends Thread {
 		moteur.run();
 		System.out.println(moteur.fromResultatToString());
 	}
+	*/
 
 }
