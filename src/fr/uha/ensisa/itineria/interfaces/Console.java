@@ -77,7 +77,7 @@ public class Console extends Thread {
 		
 		departementDepart = 67;
 		departementArrivee = 64;
-		methode = 3; // Profondeur
+		methode = 4; // Profondeur limitée
 		//methode = 6; // Glouton
 		//methode = 7; // A*
 		profondeurLimite = 12;

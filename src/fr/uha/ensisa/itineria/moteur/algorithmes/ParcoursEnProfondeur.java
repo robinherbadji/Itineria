@@ -59,6 +59,12 @@ public class ParcoursEnProfondeur extends Algorithme {
 		Noeud noeudCourant = frontier.peekLast();
 		nbNoeudsExplores++;
 		Ville villeCourante = noeudCourant.getVille();
+		
+		if (verifierObjectif(villeCourante)) {
+			resultat = new Resultat(noeudCourant.getTrajetFromRacine(), nbNoeudsExplores,
+					System.currentTimeMillis() - tempsDeCalcul, parametres);
+			return;
+		}
 
 		for (Route route : villeCourante.getRoutesVersVoisins()) {
 			Ville villeVoisine = route.getAutreVille(villeCourante);
@@ -66,12 +72,6 @@ public class ParcoursEnProfondeur extends Algorithme {
 			if (!villeDejaParcourue(villeVoisine, noeudCourant)) {
 				Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant, noeudCourant.getCout() + route.getDistance(),
 						noeudCourant.getProfondeur() + 1);
-
-				if (verifierObjectif(villeVoisine)) {
-					resultat = new Resultat(noeudVoisin.getTrajetFromRacine(), nbNoeudsExplores,
-							System.currentTimeMillis() - tempsDeCalcul, parametres);
-					return;
-				}
 				frontier.add(noeudVoisin);
 				parcoursEnProfondeur();
 			}

@@ -57,6 +57,12 @@ public class ParcoursEnProfondeurLimitee extends Algorithme {
 		nbNoeudsExplores++;
 		Ville villeCourante = noeudCourant.getVille();
 		
+		if (verifierObjectif(villeCourante)) {
+			resultat = new Resultat(noeudCourant.getTrajetFromRacine(), nbNoeudsExplores,
+					System.currentTimeMillis() - tempsDeCalcul, parametres);
+			return;
+		}
+		
 		if (noeudCourant.getProfondeur() >= parametres.getProfondeurLimite()) {
 			return;
 		}
@@ -67,12 +73,6 @@ public class ParcoursEnProfondeurLimitee extends Algorithme {
 			if (!villeDejaParcourue(villeVoisine, noeudCourant)) {
 				Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant, noeudCourant.getCout() + route.getDistance(),
 						noeudCourant.getProfondeur() + 1);
-
-				if (verifierObjectif(villeVoisine)) {
-					resultat = new Resultat(noeudVoisin.getTrajetFromRacine(), nbNoeudsExplores,
-							System.currentTimeMillis() - tempsDeCalcul, parametres);
-					return;
-				}
 				frontier.add(noeudVoisin);
 				parcoursEnProfondeurLimitee();
 			}
