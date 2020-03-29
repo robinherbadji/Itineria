@@ -85,10 +85,11 @@ public class RechercheAStar extends Algorithme {
 			noeudCourant = frontier.remove();
 			Ville villeCourante = noeudCourant.getVille();
 			explored.add(noeudCourant);
+			nbNoeudsExplores++;
 
 			// Succès de l'Algo
 			if (verifierObjectif(villeCourante)) {
-				resultat = new Resultat(noeudCourant.getTrajetFromRacine(), explored.size(),
+				resultat = new Resultat(noeudCourant.getTrajetFromRacine(), nbNoeudsExplores,
 						System.currentTimeMillis() - tempsDeCalcul, parametres);
 				return;
 			}			

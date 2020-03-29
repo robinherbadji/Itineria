@@ -36,6 +36,7 @@ public class ParcoursEnLargeur extends Algorithme {
 	 *
 	 */
 	public void launch() {
+		System.out.println("Parcours en Largeur");
 		tempsDeCalcul = System.currentTimeMillis();
 
 		if (verifierObjectif(parametres.getDepart())) {
@@ -62,6 +63,7 @@ public class ParcoursEnLargeur extends Algorithme {
 		while (!frontier.isEmpty()) {
 			noeudCourant = frontier.remove();
 			explored.add(noeudCourant);
+			nbNoeudsExplores++;
 			Ville villeCourante = noeudCourant.getVille();
 			
 			for (Route route : villeCourante.getRoutesVersVoisins()) {
@@ -74,7 +76,7 @@ public class ParcoursEnLargeur extends Algorithme {
 					if (verifierObjectif(villeVoisine)) {
 						
 						// Succès de l'Algo
-						resultat = new Resultat(noeudVoisin.getTrajetFromRacine(), explored.size(),
+						resultat = new Resultat(noeudVoisin.getTrajetFromRacine(), nbNoeudsExplores,
 								System.currentTimeMillis() - tempsDeCalcul, parametres);
 						return;
 					}
@@ -83,7 +85,7 @@ public class ParcoursEnLargeur extends Algorithme {
 			}
 		}
 		// Echec de l'Algo
-		resultat = new Resultat(new ArrayList<Route>(), explored.size(), System.currentTimeMillis()-tempsDeCalcul, parametres);
+		resultat = new Resultat(new ArrayList<Route>(), nbNoeudsExplores, System.currentTimeMillis()-tempsDeCalcul, parametres);
 	}
 	
 

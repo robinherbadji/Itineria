@@ -75,12 +75,13 @@ public class ParcoursCoutUniforme extends Algorithme {
 
 			// Succès de l'Algo
 			if (verifierObjectif(villeCourante)) {
-				resultat = new Resultat(noeudCourant.getTrajetFromRacine(), explored.size(),
+				resultat = new Resultat(noeudCourant.getTrajetFromRacine(), nbNoeudsExplores,
 						System.currentTimeMillis() - tempsDeCalcul, parametres);
 				return;
 			}
 
 			explored.add(noeudCourant);
+			nbNoeudsExplores++;
 
 			for (Route route : villeCourante.getRoutesVersVoisins()) {
 				Ville villeVoisine = route.getAutreVille(villeCourante);
@@ -102,7 +103,7 @@ public class ParcoursCoutUniforme extends Algorithme {
 			}
 		}
 		// Echec de l'Algo
-		resultat = new Resultat(new ArrayList<Route>(), explored.size(), System.currentTimeMillis() - tempsDeCalcul,
+		resultat = new Resultat(new ArrayList<Route>(), nbNoeudsExplores, System.currentTimeMillis() - tempsDeCalcul,
 				parametres);
 	}
 
