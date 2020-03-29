@@ -72,18 +72,18 @@ public class Noeud {
 	 * @author Robin
 	 */
 	public ArrayList<Ville> getVillesFromRacine()
-	{		
+	{
 		ArrayList<Ville> villes = new ArrayList<Ville>();
 		if (parent != null) {
 			villes.addAll(parent.getVillesFromRacine());			
-		}
+		}		
 		villes.add(ville);
 		return villes;
 	}
 	
+	
 	public void setCout(double cout) {
-		this.cout=cout;
-		
+		this.cout=cout;		
 	}
 	
 }

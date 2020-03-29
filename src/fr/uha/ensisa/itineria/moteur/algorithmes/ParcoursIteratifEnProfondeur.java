@@ -3,6 +3,7 @@ package fr.uha.ensisa.itineria.moteur.algorithmes;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedList;
 
 import fr.uha.ensisa.itineria.donnees.ArbreDeRecherche;
 import fr.uha.ensisa.itineria.donnees.Carte;
@@ -19,93 +20,97 @@ import fr.uha.ensisa.itineria.donnees.Ville;
  *
  */
 public class ParcoursIteratifEnProfondeur extends Algorithme {
-	private HashSet<Noeud> explored;
-	private Noeud result;
-
+	private LinkedList<Noeud> frontier;
 	
 	public ParcoursIteratifEnProfondeur(Carte carte, Parametres parametres) {
 		super(carte, parametres);
-		explored = new HashSet<Noeud>();
-		result = null;
+		frontier = new LinkedList<Noeud>();
 	}
-	
-	public void launch()
-	{
-		System.out.println("Parcours Itératif en Profondeur");
-		tempsDeCalcul = System.currentTimeMillis();
-		
-		arbre = new ArbreDeRecherche(new Noeud(parametres.getDepart(), null, 0, 0));
-		explored.add(arbre.getRacine());
-		
-		//DFS(arbre.getRacine());
-		
-	}
-	
-	/*
-	private Noeud DFS(Noeud noeudCourant) {
-		Ville villeCourante = noeudCourant.getVille();
-		//explored.add(noeudCourant);
-		//System.out.println("Ville Courante : "+villeCourante);
-		
-		
-		if (verifierObjectif(villeCourante)) {			
-			// Succès de l'Algo
-			//explored.add(noeudCourant);
-			resultat = new Resultat(noeudCourant.getTrajetFromRacine(), explored.size(),
-					System.currentTimeMillis() - tempsDeCalcul, parametres);
-			return noeudCourant;
-		}
-		
-		else if (noeudCourant.getProfondeur() > parametres.getProfondeurLimite()) {
-			// Echec de l'algo
-			resultat = new Resultat(new ArrayList<Route>(), explored.size(),
-					System.currentTimeMillis() - tempsDeCalcul, parametres);
-			//cutoff_occurred = true;
-			return new Noeud(null,null,-1,parametres.getProfondeurLimite());
-		}
-		
-		else {
-			cutoff_occurred = false;
-			
-			for (Route route : villeCourante.getRoutesVersVoisins()) {
-				Ville villeVoisine = route.getAutreVille(villeCourante);
-				if (!villeDejaExplore(villeVoisine)) {
-					Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
-							noeudCourant.getCout()+route.getDistance(), noeudCourant.getProfondeur()+1);
-					explored.add(noeudVoisin);					
-					result = DFS(noeudVoisin);
-					
-					//if (result == null) {
-					if (result.getProfondeur() == parametres.getProfondeurLimite()) {
-						cutoff_occurred = true;
-					}
-					else {
-						return result;
-					}					
-				}				
-			}
-			if (cutoff_occurred) {
-				return new Noeud(null,null,-1,parametres.getProfondeurLimite());
-			}
-			return null;
-		}
-	}
-	*/
 	
 	/***
 	 * 
 	 * @author Robin
+	 *
+	 */	
+	public void launch() {
+		System.out.println("Parcours Itératif en Profondeur");
+		tempsDeCalcul = System.currentTimeMillis();
+		
+		arbre = new ArbreDeRecherche(new Noeud(parametres.getDepart(), null, 0, 0));
+		frontier.add(arbre.getRacine());
+		
+		parcoursIteratifEnProfondeur(100);
+	}
+	
+	/**
+	 * Cherche le Noeud solution de l'algorithme de Parcours Itératif en Profondeur (IDS en anglais)
 	 * 
-	 *         Vérifie si la ville passée en paramètre a déjà été explorée
-	 * @param ville
-	 * @return
+	 * @param limite_max 
+	 * @author Robin
 	 */
-	private boolean villeDejaExplore(Ville ville) {
-		for (Noeud noeud : explored) {
-			if (noeud.getVille() == ville)
+	public void parcoursIteratifEnProfondeur(int limite_max) {
+		for (int lim = 1; lim < limite_max; lim++) {
+			frontier = new LinkedList<Noeud>();
+			frontier.add(arbre.getRacine());
+			parcoursEnProfondeurLimitee(lim);
+		}
+	}
+	
+		
+	/**
+	 * Cherche le Noeud solution de l'algorithme de Parcours en Profondeur Limitée (IDS en anglais)
+	 * 
+	 * @return
+	 * @author Robin
+	 */
+	public void parcoursEnProfondeurLimitee(int limite) {
+		if (resultat != null) {
+			return;
+		}
+		Noeud noeudCourant = frontier.peekLast();
+		nbNoeudsExplores++;
+		Ville villeCourante = noeudCourant.getVille();
+		
+		if (noeudCourant.getProfondeur() >= limite) {
+			return;
+		}
+
+		for (Route route : villeCourante.getRoutesVersVoisins()) {
+			Ville villeVoisine = route.getAutreVille(villeCourante);
+
+			if (!villeDejaParcourue(villeVoisine, noeudCourant)) {
+				Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant, noeudCourant.getCout() + route.getDistance(),
+						noeudCourant.getProfondeur() + 1);
+
+				if (verifierObjectif(villeVoisine)) {
+					resultat = new Resultat(noeudVoisin.getTrajetFromRacine(), nbNoeudsExplores,
+							System.currentTimeMillis() - tempsDeCalcul, parametres);
+					return;
+				}
+				frontier.add(noeudVoisin);
+				parcoursEnProfondeurLimitee(limite);
+			}
+		}
+		frontier.removeLast();
+	}
+	
+	
+	/**
+	 * Vérifie si la ville en paramètre a déjà été parcourue par un des parents du noeud
+	 * 
+	 * @param ville
+	 * @param noeudCourant
+	 * @return - true si ville a déjà été parcourue;</br>
+	 *         - false sinon
+	 * @author Robin
+	 */
+	private boolean villeDejaParcourue(Ville ville, Noeud noeudCourant) {		
+		for(Ville villeParcourue : noeudCourant.getVillesFromRacine()) {
+			if(villeParcourue == ville) {
 				return true;
+			}				
 		}
 		return false;
-	}
+	}	
 	
 }

@@ -51,6 +51,7 @@ public class ParcoursCoutUniforme extends Algorithme {
 	 *
 	 */
 	public void launch() {
+		System.out.println("Parcours en Coût Uniforme");
 		tempsDeCalcul = System.currentTimeMillis();
 
 		arbre = new ArbreDeRecherche(new Noeud(parametres.getDepart(), null, 0, 0));
