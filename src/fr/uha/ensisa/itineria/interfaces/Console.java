@@ -68,21 +68,18 @@ public class Console extends Thread {
 	}
 	*/
 	
+	
 	public void run()
 	{
 		int departementDepart, departementArrivee, methode, heuristique=-1, profondeurLimite=0;
 		
 		Moteur moteur = new Moteur();
-		/*
-		departementDepart = 67;
-		departementArrivee = 64;
-		methode = 2;
-		*/
 		
 		departementDepart = 67;
 		departementArrivee = 64;
 		//methode = 6; // Glouton
-		methode = 7; // A*
+		methode = 5; // A*
+		profondeurLimite = 12;
 		//heuristique = 0; //Oiseau
 		heuristique = 2; //temps restant
 		

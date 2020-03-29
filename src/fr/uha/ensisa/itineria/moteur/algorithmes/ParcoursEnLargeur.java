@@ -85,6 +85,7 @@ public class ParcoursEnLargeur extends Algorithme {
 		// Echec de l'Algo
 		resultat = new Resultat(new ArrayList<Route>(), explored.size(), System.currentTimeMillis()-tempsDeCalcul, parametres);
 	}
+	
 
 	
 	/***
