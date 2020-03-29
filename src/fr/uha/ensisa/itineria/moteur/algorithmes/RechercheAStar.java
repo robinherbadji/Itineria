@@ -97,13 +97,13 @@ public class RechercheAStar extends Algorithme {
 				Ville villeVoisine = route.getAutreVille(villeCourante);
 				if (!villeDejaExplore(villeVoisine)) {
 					Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
-							noeudCourant.getCout() + route.getDistance(), noeudCourant.getProfondeur() + 1);
+							calculCout(noeudCourant, route), noeudCourant.getProfondeur() + 1);
 					frontier.add(noeudVoisin);
 				}
 
 				else {
 					Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
-							noeudCourant.getCout() + route.getDistance(), noeudCourant.getProfondeur() + 1);
+							calculCout(noeudCourant, route), noeudCourant.getProfondeur() + 1);
 					Noeud noeudAncien = noeudDansFontiere(villeVoisine);
 					if (noeudAncien != null && noeudAncien.getCout() > noeudVoisin.getCout()) {
 						frontier.remove(noeudAncien);
@@ -163,6 +163,26 @@ public class RechercheAStar extends Algorithme {
 			duree+=r.getDuree();
 		}
 		return duree;
+	}
+	
+	
+	/**
+	 * Renvoie le cout pour aller à la ville voisine selon l'heuristique choisie
+	 * 
+	 * @param noeud
+	 * @param route
+	 * @return le cout en minutes ou en kilomètres
+	 * @author Robin
+	 */
+	private double calculCout(Noeud noeud, Route route) {
+		double coutRoute;
+		if (parametres.getHeuristique() == Constantes.HEURISTIQUE_TEMPS) {
+			coutRoute = route.getDuree();
+		}
+		else {
+			coutRoute = route.getDistance();
+		}
+		return noeud.getCout() + coutRoute;
 	}
 
 }
