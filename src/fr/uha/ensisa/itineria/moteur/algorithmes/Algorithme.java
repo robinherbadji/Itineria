@@ -18,6 +18,7 @@ public abstract class Algorithme {
 	protected ArbreDeRecherche arbre;
 	
 	protected int nbNoeudsExplores;
+	protected long tempsDeCalcul;
 	
 	public Algorithme(Carte carte, Parametres parametres)
 	{
@@ -25,6 +26,7 @@ public abstract class Algorithme {
 		this.parametres=parametres;
 		this.resultat=null;
 		nbNoeudsExplores=0;
+		tempsDeCalcul=0;
 	}
 	
 	/**

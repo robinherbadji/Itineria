@@ -470,7 +470,7 @@ public class Carte {
 		String s="";
 		int i=1;
 		for(Ville v : villes)
-		{			
+		{
 			s+=v.toString();
 			int nbTab=3-(v.toString().length()/8);
 			for(int a=0;a<nbTab;a++)

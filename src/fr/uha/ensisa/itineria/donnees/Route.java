@@ -40,13 +40,22 @@ public class Route {
 	
 	/**
 	 * Renvoie la ville à l'autre extrémité de la route par rapport à la ville donnée en argument
+	 * 
 	 * @param v
 	 * @return
+	 * @author Robin
 	 */
 	public Ville getAutreVille(Ville v)
 	{
-		//Ã€ complÃ©ter
-		return null;
+		if (v.equals(v1)) {
+			return v2;
+		}
+		else if (v.equals(v2)) {
+			return v1;
+		}
+		else {
+			return null;
+		}
 	}
 	
 }

@@ -23,8 +23,11 @@ public abstract class Constantes {
 			"Parcours à coût uniforme", "Parcours en profondeur", "Parcours en profondeur limitée",
 			"Parcours itératif en profondeur", "Recherche gloutonne", "Recherche A*"};
 	
-	public static final int HEURISTIQUE_VOL_OISEAU = 0;
-	public static final int HEURISTIQUE_TEMPS = 1;
+	public static final int HEURISTIQUE_VOL_OISEAU = 1;
+	public static final int HEURISTIQUE_TEMPS = 2;
 	
 	public static final String NOM_HEURISTIQUE[] = {"Vol d'oiseau", "Temps restant"};
+	
+	public static final double RAYON_TERRESTRE =  6372.8; // km
+	public static final double VITESSE_MOYENNE =  80; // km/h
 }
