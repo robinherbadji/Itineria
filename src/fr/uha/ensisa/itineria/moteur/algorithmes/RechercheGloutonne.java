@@ -1,6 +1,5 @@
 package fr.uha.ensisa.itineria.moteur.algorithmes;
 
-
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.PriorityQueue;
@@ -16,7 +15,6 @@ import fr.uha.ensisa.itineria.donnees.Ville;
 import fr.uha.ensisa.itineria.util.Constantes;
 import fr.uha.ensisa.itineria.util.Heuristique;
 
-
 /**
  * 
  * @author weber
@@ -29,9 +27,9 @@ public class RechercheGloutonne extends Algorithme {
 	public RechercheGloutonne(Carte carte, Parametres parametres) {
 		super(carte, parametres);
 		explored = new HashSet<Noeud>();
-		frontier = new PriorityQueue<Noeud>(new ComparateurGlouton());		
+		frontier = new PriorityQueue<Noeud>(new ComparateurGlouton());
 	}
-	
+
 	/***
 	 * 
 	 * @author Robin
@@ -43,10 +41,10 @@ public class RechercheGloutonne extends Algorithme {
 		public int compare(Noeud n1, Noeud n2) {
 			double h1 = Heuristique.calcul(parametres.getHeuristique(), n1.getVille(), parametres.getArrivee());
 			double h2 = Heuristique.calcul(parametres.getHeuristique(), n2.getVille(), parametres.getArrivee());
-			return (int)(h1 - h2);
+			return (int) (h1 - h2);
 		}
 	}
-	
+
 	/***
 	 * 
 	 * @author Robin
@@ -58,13 +56,13 @@ public class RechercheGloutonne extends Algorithme {
 
 		arbre = new ArbreDeRecherche(new Noeud(parametres.getDepart(), null, 0, 0));
 		frontier.add(arbre.getRacine());
-		
+
 		rechercheGloutonne(arbre.getRacine());
 	}
-	
-	
+
 	/**
-	 * Cherche le Noeud solution de l'algorithme de Recherche Gloutonne (Greedy Best First Search en anglais)
+	 * Cherche le Noeud solution de l'algorithme de Recherche Gloutonne (Greedy Best
+	 * First Search en anglais)
 	 * 
 	 * @param noeudCourant
 	 * @return
@@ -82,19 +80,19 @@ public class RechercheGloutonne extends Algorithme {
 				resultat = new Resultat(noeudCourant.getTrajetFromRacine(), nbNoeudsExplores,
 						System.currentTimeMillis() - tempsDeCalcul, parametres);
 				return;
-			}			
+			}
 
 			for (Route route : villeCourante.getRoutesVersVoisins()) {
 				Ville villeVoisine = route.getAutreVille(villeCourante);
 				if (!villeDejaExplore(villeVoisine)) {
-					Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
-							calculCout(noeudCourant, route), noeudCourant.getProfondeur() + 1);
+					Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant, calculCout(noeudCourant, route),
+							noeudCourant.getProfondeur() + 1);
 					frontier.add(noeudVoisin);
 				}
 
 				else {
-					Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
-							calculCout(noeudCourant, route), noeudCourant.getProfondeur() + 1);
+					Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant, calculCout(noeudCourant, route),
+							noeudCourant.getProfondeur() + 1);
 					Noeud noeudAncien = noeudDansFontiere(villeVoisine);
 					if (noeudAncien != null && noeudAncien.getCout() > noeudVoisin.getCout()) {
 						frontier.remove(noeudAncien);
@@ -104,9 +102,7 @@ public class RechercheGloutonne extends Algorithme {
 			}
 		}
 	}
-	
-	
-	
+
 	/***
 	 * Vérifie si la ville passée en paramètre a déjà été explorée
 	 * 
@@ -142,7 +138,7 @@ public class RechercheGloutonne extends Algorithme {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Renvoie le cout pour aller à la ville voisine selon l'heuristique choisie
 	 * 
@@ -155,8 +151,7 @@ public class RechercheGloutonne extends Algorithme {
 		double coutRoute;
 		if (parametres.getHeuristique() == Constantes.HEURISTIQUE_TEMPS) {
 			coutRoute = route.getDuree();
-		}
-		else {
+		} else {
 			coutRoute = route.getDistance();
 		}
 		return noeud.getCout() + coutRoute;

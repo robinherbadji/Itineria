@@ -1,6 +1,5 @@
 package fr.uha.ensisa.itineria.moteur.algorithmes;
 
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -17,7 +16,6 @@ import fr.uha.ensisa.itineria.donnees.Ville;
 import fr.uha.ensisa.itineria.util.Constantes;
 import fr.uha.ensisa.itineria.util.Heuristique;
 
-
 /**
  * 
  * @author weber
@@ -30,9 +28,9 @@ public class RechercheAStar extends Algorithme {
 	public RechercheAStar(Carte carte, Parametres parametres) {
 		super(carte, parametres);
 		explored = new HashSet<Noeud>();
-		frontier = new PriorityQueue<Noeud>(new ComparateurAStar());		
+		frontier = new PriorityQueue<Noeud>(new ComparateurAStar());
 	}
-	
+
 	/***
 	 * 
 	 * @author Robin
@@ -49,11 +47,11 @@ public class RechercheAStar extends Algorithme {
 			if (parametres.getHeuristique() == Constantes.HEURISTIQUE_TEMPS) {
 				g1 = getDuree(n1.getTrajetFromRacine());
 				g2 = getDuree(n2.getTrajetFromRacine());
-			}			
-			return (int) ((h1+g1) - (h2+g2));
+			}
+			return (int) ((h1 + g1) - (h2 + g2));
 		}
 	}
-	
+
 	/***
 	 * 
 	 * @author Robin
@@ -67,14 +65,14 @@ public class RechercheAStar extends Algorithme {
 		frontier.add(arbre.getRacine());
 
 		Noeud noeudCourant = arbre.getRacine();
-		
+
 		rechercheAStar(noeudCourant);
-		
+
 	}
-	
-	
+
 	/**
-	 * Cherche le Noeud solution de l'algorithme de Recherche A* (A Star Search en anglais)
+	 * Cherche le Noeud solution de l'algorithme de Recherche A* (A Star Search en
+	 * anglais)
 	 * 
 	 * @param noeudCourant
 	 * @return
@@ -92,19 +90,19 @@ public class RechercheAStar extends Algorithme {
 				resultat = new Resultat(noeudCourant.getTrajetFromRacine(), nbNoeudsExplores,
 						System.currentTimeMillis() - tempsDeCalcul, parametres);
 				return;
-			}			
+			}
 
 			for (Route route : villeCourante.getRoutesVersVoisins()) {
 				Ville villeVoisine = route.getAutreVille(villeCourante);
 				if (!villeDejaExplore(villeVoisine)) {
-					Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
-							calculCout(noeudCourant, route), noeudCourant.getProfondeur() + 1);
+					Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant, calculCout(noeudCourant, route),
+							noeudCourant.getProfondeur() + 1);
 					frontier.add(noeudVoisin);
 				}
 
 				else {
-					Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
-							calculCout(noeudCourant, route), noeudCourant.getProfondeur() + 1);
+					Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant, calculCout(noeudCourant, route),
+							noeudCourant.getProfondeur() + 1);
 					Noeud noeudAncien = noeudDansFontiere(villeVoisine);
 					if (noeudAncien != null && noeudAncien.getCout() > noeudVoisin.getCout()) {
 						frontier.remove(noeudAncien);
@@ -114,7 +112,7 @@ public class RechercheAStar extends Algorithme {
 			}
 		}
 	}
-	
+
 	/***
 	 * Vérifie si la ville passée en paramètre a déjà été explorée
 	 * 
@@ -150,9 +148,9 @@ public class RechercheAStar extends Algorithme {
 		}
 		return null;
 	}
-	
+
 	/**
-	 * Renvoie la duree en minutes depuis le depart 
+	 * Renvoie la duree en minutes depuis le depart
 	 * 
 	 * @param trajet
 	 * @return la duree en minutes depuis le départ
@@ -160,13 +158,12 @@ public class RechercheAStar extends Algorithme {
 	 */
 	private int getDuree(ArrayList<Route> trajet) {
 		int duree = 0;
-		for(Route r: trajet) {
-			duree+=r.getDuree();
+		for (Route r : trajet) {
+			duree += r.getDuree();
 		}
 		return duree;
 	}
-	
-	
+
 	/**
 	 * Renvoie le cout pour aller à la ville voisine selon l'heuristique choisie
 	 * 
@@ -179,8 +176,7 @@ public class RechercheAStar extends Algorithme {
 		double coutRoute;
 		if (parametres.getHeuristique() == Constantes.HEURISTIQUE_TEMPS) {
 			coutRoute = route.getDuree();
-		}
-		else {
+		} else {
 			coutRoute = route.getDistance();
 		}
 		return noeud.getCout() + coutRoute;

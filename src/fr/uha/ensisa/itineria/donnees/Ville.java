@@ -1,31 +1,30 @@
 package fr.uha.ensisa.itineria.donnees;
 
 import java.util.ArrayList;
+
 /**
  * 
  * @author weber
  *
  */
 public class Ville {
-	
+
 	private int departement;
 	private String nom;
 	private double longitude;
 	private double lattitude;
 	private ArrayList<Route> routesVersVoisins;
-	
-	public Ville(int departement, String nom, double lattitude, double longitude)
-	{
+
+	public Ville(int departement, String nom, double lattitude, double longitude) {
 		this.departement = departement;
 		this.nom = nom;
 		this.longitude = longitude;
 		this.lattitude = lattitude;
-		this.routesVersVoisins= new ArrayList<Route>();
+		this.routesVersVoisins = new ArrayList<Route>();
 	}
-	
-	public String toString()
-	{
-		return departement+") "+nom;
+
+	public String toString() {
+		return departement + ") " + nom;
 	}
 
 	public int getDepartement() {
@@ -43,16 +42,15 @@ public class Ville {
 	public double getLattitude() {
 		return lattitude;
 	}
-	
-	public void addRoutes(Route r)
-	{
+
+	public void addRoutes(Route r) {
 		routesVersVoisins.add(r);
 	}
 
 	public ArrayList<Route> getRoutesVersVoisins() {
 		return routesVersVoisins;
 	}
-	
+
 	/**
 	 * Renvoie la route reliant la ville voisine donnée en argument
 	 * 
@@ -60,8 +58,7 @@ public class Ville {
 	 * @return
 	 * @author Robin
 	 */
-	public Route getRouteTo(Ville v)
-	{
+	public Route getRouteTo(Ville v) {
 		for (Route route : routesVersVoisins) {
 			if (route.getAutreVille(v) == this) {
 				return route;
@@ -69,10 +66,9 @@ public class Ville {
 		}
 		return null;
 	}
-	
-	public boolean equals(Object o)
-	{
+
+	public boolean equals(Object o) {
 		Ville v2 = (Ville) o;
-		return (departement==v2.departement&&nom==v2.nom);
+		return (departement == v2.departement && nom == v2.nom);
 	}
 }

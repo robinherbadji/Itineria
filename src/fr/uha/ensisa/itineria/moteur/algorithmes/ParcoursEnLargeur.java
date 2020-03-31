@@ -1,6 +1,5 @@
 package fr.uha.ensisa.itineria.moteur.algorithmes;
 
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -13,7 +12,6 @@ import fr.uha.ensisa.itineria.donnees.Parametres;
 import fr.uha.ensisa.itineria.donnees.Resultat;
 import fr.uha.ensisa.itineria.donnees.Route;
 import fr.uha.ensisa.itineria.donnees.Ville;
-
 
 /**
  * 
@@ -44,16 +42,16 @@ public class ParcoursEnLargeur extends Algorithme {
 					parametres);
 			return;
 		}
-		
+
 		arbre = new ArbreDeRecherche(new Noeud(parametres.getDepart(), null, 0, 0));
 		frontier.add(arbre.getRacine());
-		
+
 		parcoursEnLargeur(arbre.getRacine());
 	}
-	
-	
+
 	/**
-	 * Cherche le Noeud solution de l'algorithme de Parcours en Largeur (BFS en anglais)
+	 * Cherche le Noeud solution de l'algorithme de Parcours en Largeur (BFS en
+	 * anglais)
 	 * 
 	 * @param noeudCourant
 	 * @return
@@ -65,16 +63,16 @@ public class ParcoursEnLargeur extends Algorithme {
 			explored.add(noeudCourant);
 			nbNoeudsExplores++;
 			Ville villeCourante = noeudCourant.getVille();
-			
+
 			for (Route route : villeCourante.getRoutesVersVoisins()) {
 				Ville villeVoisine = route.getAutreVille(villeCourante);
-				
+
 				if (!villeDejaExplore(villeVoisine)) {
 					Noeud noeudVoisin = new Noeud(villeVoisine, noeudCourant,
 							noeudCourant.getCout() + route.getDistance(), noeudCourant.getProfondeur() + 1);
-					
+
 					if (verifierObjectif(villeVoisine)) {
-						
+
 						// Succès de l'Algo
 						resultat = new Resultat(noeudVoisin.getTrajetFromRacine(), nbNoeudsExplores,
 								System.currentTimeMillis() - tempsDeCalcul, parametres);
@@ -85,11 +83,10 @@ public class ParcoursEnLargeur extends Algorithme {
 			}
 		}
 		// Echec de l'Algo
-		resultat = new Resultat(new ArrayList<Route>(), nbNoeudsExplores, System.currentTimeMillis()-tempsDeCalcul, parametres);
+		resultat = new Resultat(new ArrayList<Route>(), nbNoeudsExplores, System.currentTimeMillis() - tempsDeCalcul,
+				parametres);
 	}
-	
 
-	
 	/***
 	 * Vérifie si la ville passée en paramètre a déjà été explorée
 	 * 
@@ -108,5 +105,5 @@ public class ParcoursEnLargeur extends Algorithme {
 		}
 		return false;
 	}
-	
+
 }

@@ -1,6 +1,5 @@
 package fr.uha.ensisa.itineria.moteur.algorithmes;
 
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -14,7 +13,6 @@ import fr.uha.ensisa.itineria.donnees.Parametres;
 import fr.uha.ensisa.itineria.donnees.Resultat;
 import fr.uha.ensisa.itineria.donnees.Route;
 import fr.uha.ensisa.itineria.donnees.Ville;
-
 
 /**
  * 
@@ -43,7 +41,6 @@ public class ParcoursCoutUniforme extends Algorithme {
 			return (int) (n1.getCout() - n2.getCout());
 		}
 	}
-	
 
 	/***
 	 * 
@@ -56,11 +53,10 @@ public class ParcoursCoutUniforme extends Algorithme {
 
 		arbre = new ArbreDeRecherche(new Noeud(parametres.getDepart(), null, 0, 0));
 		frontier.add(arbre.getRacine());
-		
+
 		parcoursCoutUniforme(arbre.getRacine());
 	}
-	
-	
+
 	/**
 	 * Cherche le Noeud solution de l'algorithme Cout Uniforme (UCS en anglais)
 	 * 
@@ -106,8 +102,6 @@ public class ParcoursCoutUniforme extends Algorithme {
 		resultat = new Resultat(new ArrayList<Route>(), nbNoeudsExplores, System.currentTimeMillis() - tempsDeCalcul,
 				parametres);
 	}
-
-	
 
 	/***
 	 * Vérifie si la ville passée en paramètre a déjà été explorée
